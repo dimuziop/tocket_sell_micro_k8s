@@ -16,7 +16,7 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
   // Now is corrects cause only differentiate a SINGLE [and ALWAYS SINGLE custom specific abstract class that all error should inherit]
 
   if (err instanceof CustomError) {
-    return res.status(err.statusCode).send({ errors: err.serializeErrors });
+    return res.status(err.statusCode).send({ errors: err.serializeErrors() });
   }
 
   res.status(400).send({
