@@ -6,6 +6,12 @@
   "scripts": {
     "start": "ts-node-dev --poll src/index.ts"
   },
+  "prettier": {
+    "semi": true,
+    "trailingComma": "none",
+    "singleQuote": true,
+    "printWidth": 80
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
