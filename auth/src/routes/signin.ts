@@ -1,7 +1,11 @@
 import express, {Request, Response} from 'express';
-import {body, validationResult} from "express-validator";
-import {RequestValidationError} from "../errors/request-validation-error";
+import {body} from "express-validator";
+import {User} from "../models/user";
 import {validateRequest} from "../middlewares/validate-request";
+import {NotFoundError} from "../errors/not-found-error";
+import {BadCredentialsError} from "../errors/bad-credentials-error";
+import jwt from "jsonwebtoken";
+import {Password} from "../services/password";
 
 const router = express.Router();
 
@@ -15,7 +19,21 @@ router.post('/api/users/signin', [
     validateRequest,
     async (req: Request, res: Response) => {
 
-        res.send('Hi there!')
+        const {email, password} = req.body;
+        const user = await User.findOne({email})
+
+        if(!user || !(await Password.check(user.password, password))) {
+            throw new BadCredentialsError()
+        }
+
+        const userJwt = jwt.sign({
+            id: user.id,
+            email: user.email
+        }, process.env.JWT_KEY!);
+
+        req.session = {jwt: userJwt};
+
+        res.status(201).send(user);
     })
 
 export {router as signInRouter}
