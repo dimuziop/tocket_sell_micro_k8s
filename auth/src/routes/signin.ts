@@ -2,7 +2,6 @@ import express, {Request, Response} from 'express';
 import {body} from "express-validator";
 import {User} from "../models/user";
 import {validateRequest} from "../middlewares/validate-request";
-import {NotFoundError} from "../errors/not-found-error";
 import {BadCredentialsError} from "../errors/bad-credentials-error";
 import jwt from "jsonwebtoken";
 import {Password} from "../services/password";
